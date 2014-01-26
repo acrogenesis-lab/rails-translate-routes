@@ -312,8 +312,9 @@ class RailsTranslateRoutes
       end
       requirements = route.requirements
       defaults = route.defaults
+      old_name = "#{route.name}" if route.name
 
-      [route.app, conditions, requirements, defaults]
+      [route.app, conditions, requirements, defaults, old_name]
     end
 
     # Add prefix for all non-default locales
@@ -393,7 +394,7 @@ module ActionDispatch
           r = RailsTranslateRoutes.init_from_file(file_path)
           r.prefix_on_default_locale = true if options && options[:prefix_on_default_locale] == true
           r.no_prefixes = true if options && options[:no_prefixes] == true
-          r.keep_untranslated_routes = true if options && options[:keep_untranslated_routes] == true
+            r.keep_untranslated_routes = true if options && options[:keep_untranslated_routes] == true
           r.translate Rails.application.routes
         end
 
