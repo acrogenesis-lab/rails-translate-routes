@@ -1,4 +1,5 @@
 # rails-translate-routes
+Hi Have found solution for `bug Looks like the gem doesnt work. Routes were translated but _path helpers doesnt work`. I have forked repository here Tested this with Rails App with various local and rails 4.0.2 version. 
 
 **Important change from version 0.0.5 (Feb 2012) to 0.1.0 (June 2012)**: if you're updating from an earlier version take into account that now translations defined in routes.yml are namespaced to avoid conflicts with other translations from app (thanks to cawel for the patch). To upgrade you just have to add the namespace `routes` to your `routes.yml (see example in the below docs).
 
@@ -40,7 +41,7 @@ We want to have them in two languages english and spanish, to accomplish this wi
 
     ActionDispatch::Routing::Translator.translate_from_file('config/locales/routes.yml')
 
-2) Now we can write translations on a standard YAML file (e.g: in `config/locales/routes.yml`), including all the locales and their translations:
+2) Now we can write translations on a standard YAML file (e.g: in `config/locales/routes.yml`, `{:keep_untranslated_routes => true}`), including all the locales and their translations:
 
     en:
       routes:
