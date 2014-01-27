@@ -17,12 +17,7 @@ class RailsTranslateRoutes
   attr_accessor :dictionary
 
   def available_locales
-    if @suffix_on_default_locale
-       @available_locales ||= I18n.available_locales.map(&:to_s)
-    else
-      @available_locales = @available_locales - [default_locale]  
-    end
-   @available_locales
+    @available_locales ||= I18n.available_locales.map(&:to_s)
   end
 
   def available_locales= locales
@@ -55,14 +50,6 @@ class RailsTranslateRoutes
 
   def no_prefixes= no_prefixes
     @no_prefixes = no_prefixes
-  end
-
-  def suffix_on_default_locale
-    @suffix_on_default_locale ||= false
-  end
-
-  def suffix_on_default_locale= locale
-    @suffix_on_default_locale = locale
   end
 
   # option allowing to keep untranslated routes
@@ -268,12 +255,11 @@ class RailsTranslateRoutes
         new_helper_name = "#{old_name}_#{suffix}"
 
         ROUTE_HELPER_CONTAINER.each do |helper_container|
-          unless @suffix_on_default_locale
-            helper_container.send :define_method, new_helper_name do |*args|
-              send "#{old_name}_#{locale_suffix(I18n.locale)}_#{suffix}", *args
-            end
+          helper_container.send :define_method, new_helper_name do |*args|
+            send "#{old_name}_#{locale_suffix(I18n.locale)}_#{suffix}", *args
           end
         end
+
         new_helper_name.to_sym
       end
     end
@@ -327,7 +313,7 @@ class RailsTranslateRoutes
       requirements = route.requirements
       defaults = route.defaults
       old_name = "#{route.name}" if route.name
- 
+
       [route.app, conditions, requirements, defaults, old_name]
     end
 
@@ -407,7 +393,6 @@ module ActionDispatch
           file_path = %w(config locales routes.yml) if file_path.blank?
           r = RailsTranslateRoutes.init_from_file(file_path)
           r.prefix_on_default_locale = true if options && options[:prefix_on_default_locale] == true
-          r.suffix_on_default_locale = true if options && options[:suffix_on_default_locale] == true 
           r.no_prefixes = true if options && options[:no_prefixes] == true
           r.keep_untranslated_routes = true if options && options[:keep_untranslated_routes] == true
           r.translate Rails.application.routes
