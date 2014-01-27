@@ -121,7 +121,7 @@ In case you want the default languages to be scoped resulting in the following s
 
 You can specify the following option:
 
-    ActionDispatch::Routing::Translator.translate_from_file('config/locales/routes.yml', { :prefix_on_default_locale => true })
+     ActionDispatch::Routing::Translator.translate_from_file('config/locales/routes.yml', {:prefix_on_default_locale => false, :keep_untranslated_routes => true })
 
 If you use the `prefix_on_default_locale` you will have to make the proper redirect on your root controller from http://www.sampleapp.com/ to http://www.sampleapp.com/en or http://www.sampleapp.com/es rails-translate-routes adds an extra unstranslated root path:
 
